@@ -8,7 +8,6 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -27,10 +26,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import dagger.hilt.android.AndroidEntryPoint
-import tr.yigitunlu.aras.presentation.composable.AddTaskSheet
-import tr.yigitunlu.aras.presentation.composable.SettingsScreen
-import tr.yigitunlu.aras.presentation.composable.TaskDetailScreen
-import tr.yigitunlu.aras.presentation.composable.TaskListScreen
+import tr.yigitunlu.aras.ui.composable.AddTaskSheet
+import tr.yigitunlu.aras.ui.composable.SettingsScreen
+import tr.yigitunlu.aras.ui.composable.TaskDetailScreen
+import tr.yigitunlu.aras.ui.composable.TaskListScreen
 import tr.yigitunlu.aras.presentation.navigation.NavigationCommand
 import tr.yigitunlu.aras.presentation.navigation.NavigationManager
 import tr.yigitunlu.aras.ui.theme.ArasTheme

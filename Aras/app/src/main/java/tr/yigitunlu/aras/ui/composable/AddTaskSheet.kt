@@ -1,4 +1,4 @@
-package tr.yigitunlu.aras.presentation.composable
+package tr.yigitunlu.aras.ui.composable
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth

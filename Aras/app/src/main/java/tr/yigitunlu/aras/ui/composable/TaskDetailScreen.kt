@@ -1,4 +1,4 @@
-package tr.yigitunlu.aras.presentation.composable
+package tr.yigitunlu.aras.ui.composable
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
