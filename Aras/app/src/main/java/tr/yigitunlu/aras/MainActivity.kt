@@ -4,6 +4,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -63,7 +68,14 @@ class MainActivity : ComponentActivity() {
                         .fillMaxSize()
                         .padding(WindowInsets.safeDrawing.asPaddingValues())
                 ) {
-                    NavHost(navController, startDestination = "taskList") {
+                    NavHost(
+                        navController,
+                        startDestination = "taskList",
+                        enterTransition = { slideInHorizontally() + fadeIn() },
+                        popEnterTransition = { fadeIn() },
+                        exitTransition = { fadeOut()  },
+                        popExitTransition = {  fadeOut()  + slideOutHorizontally()},
+                    ) {
                         composable("taskList") {
                             TaskListScreen()
                         }
