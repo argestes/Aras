@@ -1,0 +1,37 @@
+package tr.yigitunlu.aras.presentation
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+import tr.yigitunlu.aras.domain.model.Task
+import tr.yigitunlu.aras.domain.repository.TaskRepository
+import javax.inject.Inject
+
+@HiltViewModel
+class AddTaskViewModel @Inject constructor(
+    private val repository: TaskRepository
+) : ViewModel() {
+
+    private val _title = MutableStateFlow("")
+    val title = _title.asStateFlow()
+
+    private val _description = MutableStateFlow("")
+    val description = _description.asStateFlow()
+
+    fun onTitleChange(newTitle: String) {
+        _title.value = newTitle
+    }
+
+    fun onDescriptionChange(newDescription: String) {
+        _description.value = newDescription
+    }
+
+    fun addTask() {
+        viewModelScope.launch {
+            repository.insert(Task(title = _title.value, description = _description.value))
+        }
+    }
+}
