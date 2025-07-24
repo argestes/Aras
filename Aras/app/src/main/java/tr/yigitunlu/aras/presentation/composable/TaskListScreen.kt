@@ -53,7 +53,7 @@ fun TaskListScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(stringResource(id = R.string.task_list_title)) },
+                title = { Text(stringResource(id = R.string.tasks_title)) },
                 actions = {
                     FilterTasksDropdown(
                         currentFilter = currentFilter,

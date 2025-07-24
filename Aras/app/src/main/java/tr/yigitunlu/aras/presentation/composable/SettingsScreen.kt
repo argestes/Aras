@@ -67,17 +67,16 @@ fun SettingsScreen(
                 ) {
                     RadioButton(
                         selected = themeInfo.isSelected,
-                        onClick = { viewModel.updateTheme(themeInfo.theme) }
-                    )
+                        onClick = { viewModel.updateTheme(themeInfo.theme) })
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = themeInfo.name)
+                    Text(stringResource(id = themeInfo.nameRes))
                 }
             }
 
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                stringResource(id = R.string.settings_default_task_filter_title),
+                stringResource(id = R.string.settings_filter_title),
                 style = androidx.compose.material.MaterialTheme.typography.h6
             )
             uiState.filterOptions.forEach { filterInfo ->
@@ -90,10 +89,9 @@ fun SettingsScreen(
                 ) {
                     RadioButton(
                         selected = filterInfo.isSelected,
-                        onClick = { viewModel.updateTaskFilter(filterInfo.filter) }
-                    )
+                        onClick = { viewModel.updateTaskFilter(filterInfo.filter) })
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = filterInfo.name)
+                    Text(stringResource(id = filterInfo.nameRes))
                 }
             }
         }

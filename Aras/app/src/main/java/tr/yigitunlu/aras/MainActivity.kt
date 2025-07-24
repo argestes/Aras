@@ -71,10 +71,14 @@ class MainActivity : ComponentActivity() {
                     NavHost(
                         navController,
                         startDestination = "taskList",
-                        enterTransition = { slideInHorizontally() + fadeIn() },
+                        enterTransition = { slideInHorizontally(
+                            initialOffsetX = { fullWidth -> fullWidth / 2 },
+                        ) + fadeIn() },
                         popEnterTransition = { fadeIn() },
-                        exitTransition = { fadeOut()  },
-                        popExitTransition = {  fadeOut()  + slideOutHorizontally()},
+//                        exitTransition = { fadeOut()  },
+                        popExitTransition = {  fadeOut()  + slideOutHorizontally(
+                            targetOffsetX = { fullWidth -> fullWidth / 2 },
+                        )},
                     ) {
                         composable("taskList") {
                             TaskListScreen()

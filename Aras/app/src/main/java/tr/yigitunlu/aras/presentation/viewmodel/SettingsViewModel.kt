@@ -1,5 +1,6 @@
 package tr.yigitunlu.aras.presentation.viewmodel
 
+import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -9,7 +10,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import tr.yigitunlu.aras.R
-import tr.yigitunlu.aras.common.StringProvider
 import tr.yigitunlu.aras.data.repository.AppTheme
 import tr.yigitunlu.aras.data.repository.TaskFilter
 import tr.yigitunlu.aras.data.repository.UserPreferencesRepository
@@ -19,22 +19,21 @@ import javax.inject.Inject
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     private val userPreferencesRepository: UserPreferencesRepository,
-    private val navigationManager: NavigationManager,
-    private val stringProvider: StringProvider
+    private val navigationManager: NavigationManager
 ) : ViewModel() {
 
     val uiState: StateFlow<SettingsUiState> = userPreferencesRepository.userPreferencesFlow.map {
         val filterOptions = TaskFilter.values().map {  filter ->
             FilterInfo(
                 filter = filter,
-                name = stringProvider.getString(filter.toStringRes()),
+                nameRes = filter.toStringRes(),
                 isSelected = it.defaultFilter == filter
             )
         }
         val themeOptions = AppTheme.values().map { theme ->
             ThemeInfo(
                 theme = theme,
-                name = stringProvider.getString(theme.toStringRes()),
+                nameRes = theme.toStringRes(),
                 isSelected = it.theme == theme
             )
         }
@@ -69,13 +68,13 @@ data class SettingsUiState(
 
 data class FilterInfo(
     val filter: TaskFilter,
-    val name: String,
+    @StringRes val nameRes: Int,
     val isSelected: Boolean
 )
 
 data class ThemeInfo(
     val theme: AppTheme,
-    val name: String,
+    @StringRes val nameRes: Int,
     val isSelected: Boolean
 )
 

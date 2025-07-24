@@ -1,5 +1,6 @@
 package tr.yigitunlu.aras.ui.theme
 
+import android.graphics.drawable.ColorDrawable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
@@ -72,6 +73,12 @@ fun ArasTheme(
 
             window?.setNavigationBarBackgroundColor(
                 color
+            )
+
+            window?.setBackgroundDrawable(
+                ColorDrawable(
+                    if (useDarkTheme) android.graphics.Color.BLACK else android.graphics.Color.WHITE
+                )
             )
         }
     }

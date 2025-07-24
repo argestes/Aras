@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">Aras</string>
+    <string name="theme_system">System</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+    <string name="filter_all">All</string>
+    <string name="filter_active">Active</string>
+    <string name="filter_completed">Completed</string>
+    <string name="settings_title">Settings</string>
+    <string name="settings_back_button_description">Back</string>
+    <string name="settings_theme_title">Theme</string>
+    <string name="settings_filter_title">Default Task Filter</string>
+    <string name="tasks_title">Tasks</string>
+    <string name="task_detail_title">Task Detail</string>
+    <string name="task_title_label">Title</string>
+    <string name="task_description_label">Description</string>
+    <string name="task_completed_label">Completed</string>
+    <string name="add_task_title_label">Task Title</string>
+    <string name="add_task_save_button">Save Task</string>
+    <string name="task_list_settings_icon_description">Settings</string>
+    <string name="task_list_add_task_icon_description">Add Task</string>
+    <string name="task_detail_delete_task_icon_description">Delete Task</string>
+    <string name="task_list_empty_unfiltered">You have no tasks. Add one to get started!</string>
+    <string name="task_list_empty_filtered">No tasks match the current filter.</string>
+    <string name="task_list_empty_icon_description">Empty task list icon</string>
+    <string name="task_detail_delete_menu_item">Delete</string>
+    <string name="task_detail_save_task_icon_description">Save Task</string>
+    <string name="unsaved_changes_dialog_title">Unsaved Changes</string>
+    <string name="unsaved_changes_dialog_message">Are you sure you want to exit without saving changes?</string>
+    <string name="unsaved_changes_dialog_continue">Continue</string>
+    <string name="unsaved_changes_dialog_discard">Discard</string>
+</resources>

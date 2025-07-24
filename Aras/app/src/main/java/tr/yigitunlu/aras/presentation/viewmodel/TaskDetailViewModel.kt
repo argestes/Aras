@@ -17,6 +17,8 @@ import tr.yigitunlu.aras.presentation.navigation.NavigationManager
 import javax.inject.Inject
 
 data class TaskDetailUiState(
+    val isLoading: Boolean = true,
+    val showExitConfirmation: Boolean = false,
     val title: String = "",
     val description: String = "",
     val isCompleted: Boolean = false,
@@ -32,32 +34,47 @@ class TaskDetailViewModel @Inject constructor(
 
     private val taskId: Int = checkNotNull(savedStateHandle["taskId"])
 
+    private var initialTask: Task? = null
+
     private val _uiState = MutableStateFlow(TaskDetailUiState())
     val uiState: StateFlow<TaskDetailUiState> = _uiState.asStateFlow()
 
+    private val _hasUnsavedChanges = MutableStateFlow(false)
+    val hasUnsavedChanges: StateFlow<Boolean> = _hasUnsavedChanges
+
     init {
-        repository.getTaskById(taskId).onEach { task ->
-            _uiState.update {
-                it.copy(
-                    title = task?.title ?: "",
-                    description = task?.description ?: "",
-                    isCompleted = task?.isCompleted ?: false,
-                    task = task
-                )
-            }
-        }.launchIn(viewModelScope)
+        viewModelScope.launch {
+            repository.getTaskById(taskId).onEach { task ->
+                if (task != null) {
+                    initialTask = task
+                    _uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            title = task.title,
+                            description = task.description ?: "",
+                            isCompleted = task.isCompleted,
+                            task = task
+                        )
+                    }
+                    checkIfChanged()
+                }
+            }.launchIn(viewModelScope)
+        }
     }
 
-    fun onTitleChange(title: String) {
-        _uiState.update { it.copy(title = title) }
+    fun onTitleChange(newTitle: String) {
+        _uiState.update { it.copy(title = newTitle) }
+        checkIfChanged()
     }
 
-    fun onDescriptionChange(description: String) {
-        _uiState.update { it.copy(description = description) }
+    fun onDescriptionChange(newDescription: String) {
+        _uiState.update { it.copy(description = newDescription) }
+        checkIfChanged()
     }
 
     fun onCompletionChange(isCompleted: Boolean) {
         _uiState.update { it.copy(isCompleted = isCompleted) }
+        checkIfChanged()
     }
 
     fun saveTask() {
@@ -70,8 +87,9 @@ class TaskDetailViewModel @Inject constructor(
             )
             if (taskToUpdate != null) {
                 repository.update(taskToUpdate)
+                initialTask = taskToUpdate
+                checkIfChanged()
             }
-            navigationManager.goBack()
         }
     }
 
@@ -83,6 +101,42 @@ class TaskDetailViewModel @Inject constructor(
     }
 
     fun onBackClicked() {
+        if (_hasUnsavedChanges.value) {
+            _uiState.update { it.copy(showExitConfirmation = true) }
+        } else {
+            navigationManager.goBack()
+        }
+    }
+
+    fun onConfirmationDismissed() {
+        _uiState.update { it.copy(showExitConfirmation = false) }
+    }
+
+    fun onExitConfirmClicked() {
+        onConfirmationDismissed()
         navigationManager.goBack()
     }
+
+    fun onExitDismissClicked() {
+        onConfirmationDismissed()
+    }
+
+    private fun checkIfChanged() {
+        val currentState = _uiState.value
+        val original = initialTask
+
+        val changed = if (original == null) {
+            // New task
+            currentState.title.isNotEmpty() || currentState.description.isNotEmpty()
+        } else {
+            // Existing task
+            original.title != currentState.title ||
+                    original.description != currentState.description ||
+                    original.isCompleted != currentState.isCompleted
+        }
+
+        _hasUnsavedChanges.value = changed
+    }
+
+
 }
