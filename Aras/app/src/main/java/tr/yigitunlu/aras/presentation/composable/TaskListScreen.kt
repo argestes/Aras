@@ -6,7 +6,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -16,12 +18,14 @@ import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -67,22 +71,53 @@ fun TaskListScreen(
             }
         }
     ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-        ) {
-            LazyColumn {
+        if (tasks.isEmpty()) {
+            EmptyState(currentFilter = currentFilter)
+        } else {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+            ) {
                 items(tasks) { task ->
                     TaskItem(
                         task = task,
-                        onCheckedChange = {
-                            viewModel.setTaskCompleted(task.id, it)
+                        onCheckedChange = { isCompleted ->
+                            viewModel.setTaskCompleted(task.id, isCompleted)
                         },
                         onItemClick = { viewModel.onTaskClicked(task) }
                     )
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun EmptyState(currentFilter: TaskFilter) {
+    val messageRes = if (currentFilter == TaskFilter.ALL) {
+        R.string.task_list_empty_unfiltered
+    } else {
+        R.string.task_list_empty_filtered
+    }
+
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Icon(
+                imageVector = Icons.Default.List,
+                contentDescription = stringResource(id = R.string.task_list_empty_icon_description),
+                modifier = Modifier.size(48.dp),
+                tint = MaterialTheme.colors.onSurface.copy(alpha = 0.5f)
+            )
+            androidx.compose.foundation.layout.Spacer(modifier = Modifier.height(16.dp))
+            Text(
+                text = stringResource(id = messageRes),
+                style = MaterialTheme.typography.subtitle1,
+                color = MaterialTheme.colors.onSurface.copy(alpha = 0.7f)
+            )
         }
     }
 }
