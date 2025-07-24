@@ -58,4 +58,4 @@ Projeyi yerel makinenizde derlemek ve çalıştırmak için aşağıdaki adımla
 
 - **Dil Desteği**: Uygulama şu anda Türkçe (varsayılan) ve İngilizce dillerini desteklemektedir. Yeni diller `res/values-<dil_kodu>/strings.xml` yapısı takip edilerek kolayca eklenebilir.
 - **Tema**: Sistem, açık ve koyu tema seçenekleri mevcuttur. Tema renkleri `ui/theme/Color.kt` dosyasından yönetilmektedir.
-- **Gelecek Geliştirmeler**: Gelecekte, görevlere hatırlatıcı ekleme, görevleri kategorilere ayırma veya bulut senkronizasyonu gibi özellikler eklenebilir.
+- **Gelecek Geliştirmeler**: Gelecekte, görevlere hatırlatıcı ekleme, görevleri kategorilere ayırma veya bulut senkronizasyonu gibi özellikler eklenebilir. Veritabanı işlemleri veya diğer hatalar için daha kapsamlı bir hata yönetimi (error handling) mekanizması kurulabilir.

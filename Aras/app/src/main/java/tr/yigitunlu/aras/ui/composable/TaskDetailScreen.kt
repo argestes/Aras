@@ -39,6 +39,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import tr.yigitunlu.aras.R
 import tr.yigitunlu.aras.presentation.viewmodel.TaskDetailViewModel
+import tr.yigitunlu.aras.ui.theme.Padding
+import tr.yigitunlu.aras.ui.theme.Spacing
 
 @Composable
 fun TaskDetailScreen(
@@ -112,7 +114,7 @@ fun TaskDetailScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(padding)
-                    .padding(16.dp),
+                    .padding(Padding.Medium),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 OutlinedTextField(
@@ -122,15 +124,17 @@ fun TaskDetailScreen(
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true
                 )
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(Spacing.Medium))
                 OutlinedTextField(
                     value = uiState.description,
                     onValueChange = { viewModel.onDescriptionChange(it) },
                     label = { Text(stringResource(id = R.string.task_description_label)) },
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = Padding.Small),
                     minLines = 5
                 )
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(Spacing.Medium))
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -138,10 +142,10 @@ fun TaskDetailScreen(
                         checked = uiState.isCompleted,
                         onCheckedChange = viewModel::onCompletionChange
                     )
-                    Spacer(modifier = Modifier.width(8.dp))
+                    Spacer(modifier = Modifier.width(Spacing.Small))
                     Text(stringResource(id = R.string.task_completed_label))
                 }
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(Spacing.Medium))
             }
         }
     }

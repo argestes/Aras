@@ -23,10 +23,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import tr.yigitunlu.aras.R
 import tr.yigitunlu.aras.presentation.viewmodel.SettingsViewModel
+import tr.yigitunlu.aras.ui.theme.Padding
+import tr.yigitunlu.aras.ui.theme.Spacing
 
 @Composable
 fun SettingsScreen(
@@ -53,7 +54,7 @@ fun SettingsScreen(
         Column(
             modifier = Modifier
                 .padding(padding)
-                .padding(16.dp)
+                .padding(Padding.Medium)
         ) {
             Text(stringResource(id = R.string.settings_theme_title),
                 style = androidx.compose.material.MaterialTheme.typography.h6)
@@ -61,19 +62,19 @@ fun SettingsScreen(
                 Row(
                     Modifier
                         .fillMaxWidth()
-                        .clickable { viewModel.updateTheme(themeInfo.theme) }
-                        .padding(vertical = 8.dp),
+                        .clickable { viewModel.onThemeClicked(themeInfo.theme) }
+                        .padding(vertical = Padding.Small),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     RadioButton(
                         selected = themeInfo.isSelected,
-                        onClick = { viewModel.updateTheme(themeInfo.theme) })
-                    Spacer(modifier = Modifier.width(8.dp))
+                        onClick = { viewModel.onThemeClicked(themeInfo.theme) })
+                    Spacer(modifier = Modifier.width(Spacing.Small))
                     Text(stringResource(id = themeInfo.nameRes))
                 }
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(Spacing.Medium))
 
             Text(
                 stringResource(id = R.string.settings_filter_title),
@@ -84,13 +85,13 @@ fun SettingsScreen(
                     Modifier
                         .fillMaxWidth()
                         .clickable { viewModel.updateTaskFilter(filterInfo.filter) }
-                        .padding(vertical = 8.dp),
+                        .padding(vertical = Padding.Small),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     RadioButton(
                         selected = filterInfo.isSelected,
                         onClick = { viewModel.updateTaskFilter(filterInfo.filter) })
-                    Spacer(modifier = Modifier.width(8.dp))
+                    Spacer(modifier = Modifier.width(Spacing.Small))
                     Text(stringResource(id = filterInfo.nameRes))
                 }
             }

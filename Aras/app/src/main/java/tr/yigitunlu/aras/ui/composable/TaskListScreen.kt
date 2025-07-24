@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Checkbox
@@ -35,13 +34,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import tr.yigitunlu.aras.R
 import tr.yigitunlu.aras.data.repository.TaskFilter
 import tr.yigitunlu.aras.domain.model.Task
 import tr.yigitunlu.aras.presentation.viewmodel.TaskViewModel
+import tr.yigitunlu.aras.ui.theme.HeroIconSize
+import tr.yigitunlu.aras.ui.theme.Padding
+import tr.yigitunlu.aras.ui.theme.Spacing
 
 @Composable
 fun TaskListScreen(
@@ -79,7 +80,7 @@ fun TaskListScreen(
                     .fillMaxSize()
                     .padding(paddingValues)
             ) {
-                items(tasks) { task ->
+                items(tasks, key = { it.id }) { task ->
                     TaskItem(
                         task = task,
                         onCheckedChange = { isCompleted ->
@@ -109,10 +110,10 @@ private fun EmptyState(currentFilter: TaskFilter) {
             Icon(
                 imageVector = Icons.Default.List,
                 contentDescription = stringResource(id = R.string.task_list_empty_icon_description),
-                modifier = Modifier.size(48.dp),
+                modifier = Modifier.size(HeroIconSize),
                 tint = MaterialTheme.colors.onSurface.copy(alpha = 0.5f)
             )
-            androidx.compose.foundation.layout.Spacer(modifier = Modifier.height(16.dp))
+            androidx.compose.foundation.layout.Spacer(modifier = Modifier.height(Spacing.Medium))
             Text(
                 text = stringResource(id = messageRes),
                 style = MaterialTheme.typography.subtitle1,
@@ -162,14 +163,14 @@ fun TaskItem(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onItemClick() }
-            .padding(vertical = 16.dp),
+            .padding(vertical = Padding.Medium),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Checkbox(
             checked = task.isCompleted,
-            onCheckedChange = onCheckedChange
+            onCheckedChange = onCheckedChange,
+            modifier = Modifier.padding(end = Padding.Medium)
         )
-        androidx.compose.foundation.layout.Spacer(modifier = Modifier.width(16.dp))
         Text(text = task.title, style = androidx.compose.material.MaterialTheme.typography.h6)
     }
 }

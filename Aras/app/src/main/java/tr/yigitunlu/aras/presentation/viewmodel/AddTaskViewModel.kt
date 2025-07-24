@@ -31,7 +31,11 @@ class AddTaskViewModel @Inject constructor(
         _description.value = newDescription
     }
 
-    fun addTask() {
+    fun onKeyboardSaveClicked() {
+        onSaveClicked()
+    }
+
+    fun onSaveClicked() {
         viewModelScope.launch {
             if (_title.value.isNotBlank()) {
                 repository.insert(Task(title = _title.value, description = _description.value))

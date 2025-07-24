@@ -44,7 +44,7 @@ class SettingsViewModel @Inject constructor(
         initialValue = SettingsUiState()
     )
 
-    fun updateTheme(theme: AppTheme) {
+    fun onThemeClicked(theme: AppTheme) {
         viewModelScope.launch {
             userPreferencesRepository.updateTheme(theme)
         }

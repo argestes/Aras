@@ -15,10 +15,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import tr.yigitunlu.aras.R
 import tr.yigitunlu.aras.presentation.viewmodel.AddTaskViewModel
+import tr.yigitunlu.aras.ui.theme.Padding
 
 @Composable
 fun AddTaskSheet(
@@ -30,7 +30,7 @@ fun AddTaskSheet(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp),
+            .padding(Padding.Medium),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         OutlinedTextField(
@@ -50,19 +50,21 @@ fun AddTaskSheet(
             label = { Text(stringResource(id = R.string.task_description_label)) },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 8.dp),
+                .padding(top = Padding.Small),
             keyboardOptions = KeyboardOptions.Default.copy(
                 imeAction = ImeAction.Send
             ),
             keyboardActions = KeyboardActions(
-                onSend = { viewModel.addTask() }
+                onSend = {
+                    viewModel.onKeyboardSaveClicked()
+                }
             )
         )
 
         Button(
-            onClick = { viewModel.addTask() },
+            onClick = { viewModel.onSaveClicked() },
             modifier = Modifier
-                .padding(top = 16.dp)
+                .padding(top = Padding.Medium)
                 .align(Alignment.End)
         ) {
             Text(stringResource(id = R.string.add_task_save_button))
