@@ -1,6 +1,5 @@
-package tr.yigitunlu.aras.ui.theme
+package tr.yigitunlu.aras.presentation.viewmodel
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel

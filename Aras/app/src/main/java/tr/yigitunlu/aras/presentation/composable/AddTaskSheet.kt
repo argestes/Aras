@@ -1,4 +1,4 @@
-package tr.yigitunlu.aras.presentation
+package tr.yigitunlu.aras.presentation.composable
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,14 +13,16 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import tr.yigitunlu.aras.R
+import tr.yigitunlu.aras.presentation.viewmodel.AddTaskViewModel
 
 @Composable
 fun AddTaskSheet(
-    viewModel: AddTaskViewModel = hiltViewModel(),
-    onTaskAdded: () -> Unit
+    viewModel: AddTaskViewModel = hiltViewModel()
 ) {
     val title by viewModel.title.collectAsState()
     val description by viewModel.description.collectAsState()
@@ -34,16 +36,18 @@ fun AddTaskSheet(
         OutlinedTextField(
             value = title,
             onValueChange = viewModel::onTitleChange,
-            label = { Text("Task Title") },
+            label = { Text(stringResource(id = R.string.add_task_title_label)) },
             modifier = Modifier.fillMaxWidth(),
             keyboardOptions = KeyboardOptions.Default.copy(
                 imeAction = ImeAction.Next
-            )
+            ),
+            singleLine = true
         )
+
         OutlinedTextField(
             value = description,
             onValueChange = viewModel::onDescriptionChange,
-            label = { Text("Description") },
+            label = { Text(stringResource(id = R.string.task_description_label)) },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 8.dp),
@@ -51,24 +55,17 @@ fun AddTaskSheet(
                 imeAction = ImeAction.Send
             ),
             keyboardActions = KeyboardActions(
-                onSend = {
-                    if (title.isNotBlank()) {
-                        viewModel.addTask()
-                        onTaskAdded()
-                    }
-                }
+                onSend = { viewModel.addTask() }
             )
         )
+
         Button(
-            onClick = {
-                if (title.isNotBlank()) {
-                    viewModel.addTask()
-                    onTaskAdded()
-                }
-            },
-            modifier = Modifier.padding(top = 16.dp)
+            onClick = { viewModel.addTask() },
+            modifier = Modifier
+                .padding(top = 16.dp)
+                .align(Alignment.End)
         ) {
-            Text("Save Task")
+            Text(stringResource(id = R.string.add_task_save_button))
         }
     }
 }

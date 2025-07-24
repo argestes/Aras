@@ -1,4 +1,4 @@
-package tr.yigitunlu.aras.presentation
+package tr.yigitunlu.aras.presentation.composable
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Checkbox
@@ -30,17 +31,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import tr.yigitunlu.aras.R
 import tr.yigitunlu.aras.data.repository.TaskFilter
 import tr.yigitunlu.aras.domain.model.Task
+import tr.yigitunlu.aras.presentation.viewmodel.TaskViewModel
 
 @Composable
 fun TaskListScreen(
-    navController: NavController,
     viewModel: TaskViewModel = hiltViewModel()
 ) {
     val tasks by viewModel.tasks.collectAsState()
@@ -49,21 +49,21 @@ fun TaskListScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Tasks") },
+                title = { Text(stringResource(id = R.string.task_list_title)) },
                 actions = {
                     FilterTasksDropdown(
                         currentFilter = currentFilter,
-                        onFilterSelected = { viewModel.setFilter(it) }
+                        onFilterSelected = viewModel::setFilter
                     )
-                    IconButton(onClick = { navController.navigate("settings") }) {
-                        Icon(Icons.Filled.Settings, contentDescription = "Settings")
+                    IconButton(onClick = { viewModel.onSettingsClicked() }) {
+                        Icon(Icons.Filled.Settings, contentDescription = stringResource(id = R.string.task_list_settings_icon_description))
                     }
                 }
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = { navController.navigate("addTask") }) {
-                Icon(Icons.Filled.Add, contentDescription = "Add Task")
+            FloatingActionButton(onClick = { viewModel.onAddTaskClicked() }) {
+                Icon(Icons.Filled.Add, contentDescription = stringResource(id = R.string.task_list_add_task_icon_description))
             }
         }
     ) { paddingValues ->
@@ -77,9 +77,9 @@ fun TaskListScreen(
                     TaskItem(
                         task = task,
                         onCheckedChange = {
-                            viewModel.updateTask(task.copy(isCompleted = it))
+                            viewModel.setTaskCompleted(task.id, it)
                         },
-                        onItemClick = { navController.navigate("taskDetail/${task.id}") }
+                        onItemClick = { viewModel.onTaskClicked(task) }
                     )
                 }
             }
@@ -96,7 +96,10 @@ fun FilterTasksDropdown(
 
     Box {
         TextButton(onClick = { expanded = true }) {
-            Text(text = currentFilter.name)
+            Text(
+                text = stringResource(id = currentFilter.toStringRes()),
+                color = androidx.compose.material.MaterialTheme.colors.onPrimary
+            )
         }
         DropdownMenu(
             expanded = expanded,
@@ -107,7 +110,7 @@ fun FilterTasksDropdown(
                     onFilterSelected(filter)
                     expanded = false
                 }) {
-                    Text(text = filter.name)
+                    Text(text = stringResource(id = filter.toStringRes()))
                 }
             }
         }
@@ -124,16 +127,20 @@ fun TaskItem(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onItemClick() }
-            .padding(16.dp),
+            .padding(vertical = 16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(
-            text = task.title,
-            modifier = Modifier.weight(1f)
-        )
         Checkbox(
             checked = task.isCompleted,
             onCheckedChange = onCheckedChange
         )
+        androidx.compose.foundation.layout.Spacer(modifier = Modifier.width(16.dp))
+        Text(text = task.title, style = androidx.compose.material.MaterialTheme.typography.h6)
     }
+}
+
+private fun TaskFilter.toStringRes() = when (this) {
+    TaskFilter.ALL -> R.string.filter_all
+    TaskFilter.ACTIVE -> R.string.filter_active
+    TaskFilter.COMPLETED -> R.string.filter_completed
 }

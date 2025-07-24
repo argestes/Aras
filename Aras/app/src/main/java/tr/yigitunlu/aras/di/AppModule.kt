@@ -7,6 +7,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import tr.yigitunlu.aras.common.StringProvider
+import tr.yigitunlu.aras.common.StringProviderImpl
 import tr.yigitunlu.aras.data.AppDatabase
 import tr.yigitunlu.aras.data.TaskDao
 import tr.yigitunlu.aras.data.repository.TaskRepositoryImpl
@@ -37,5 +39,11 @@ object AppModule {
     @Singleton
     fun provideTaskRepository(dao: TaskDao): TaskRepository {
         return TaskRepositoryImpl(dao)
+    }
+
+    @Provides
+    @Singleton
+    fun provideStringProvider(impl: StringProviderImpl): StringProvider {
+        return impl
     }
 }

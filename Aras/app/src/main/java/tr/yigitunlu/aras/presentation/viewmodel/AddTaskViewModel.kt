@@ -1,4 +1,4 @@
-package tr.yigitunlu.aras.presentation
+package tr.yigitunlu.aras.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -8,11 +8,13 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import tr.yigitunlu.aras.domain.model.Task
 import tr.yigitunlu.aras.domain.repository.TaskRepository
+import tr.yigitunlu.aras.presentation.navigation.NavigationManager
 import javax.inject.Inject
 
 @HiltViewModel
 class AddTaskViewModel @Inject constructor(
-    private val repository: TaskRepository
+    private val repository: TaskRepository,
+    private val navigationManager: NavigationManager
 ) : ViewModel() {
 
     private val _title = MutableStateFlow("")
@@ -31,7 +33,10 @@ class AddTaskViewModel @Inject constructor(
 
     fun addTask() {
         viewModelScope.launch {
-            repository.insert(Task(title = _title.value, description = _description.value))
+            if (_title.value.isNotBlank()) {
+                repository.insert(Task(title = _title.value, description = _description.value))
+                navigationManager.goBack()
+            }
         }
     }
 }

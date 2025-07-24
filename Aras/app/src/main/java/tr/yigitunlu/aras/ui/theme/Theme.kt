@@ -5,22 +5,22 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalView
-import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.hilt.navigation.compose.hiltViewModel
 import tr.yigitunlu.aras.data.repository.AppTheme
+import tr.yigitunlu.aras.presentation.viewmodel.ThemeViewModel
 import tr.yigitunlu.aras.setNavigationBarBackgroundColor
 import tr.yigitunlu.aras.setStatusBarBackgroundColor
 
 private val DarkColorPalette = darkColors(
     primary = Purple80,
     primaryVariant = PurpleGrey80,
-    secondary = Pink80
+    secondary = Pink80,
+    onPrimary = Color.White
 )
 
 private val LightColorPalette = lightColors(

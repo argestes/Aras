@@ -1,4 +1,4 @@
-package tr.yigitunlu.aras.presentation
+package tr.yigitunlu.aras.presentation.viewmodel
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import tr.yigitunlu.aras.domain.model.Task
 import tr.yigitunlu.aras.domain.repository.TaskRepository
+import tr.yigitunlu.aras.presentation.navigation.NavigationManager
 import javax.inject.Inject
 
 data class TaskDetailUiState(
@@ -25,6 +26,7 @@ data class TaskDetailUiState(
 @HiltViewModel
 class TaskDetailViewModel @Inject constructor(
     private val repository: TaskRepository,
+    private val navigationManager: NavigationManager,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -69,12 +71,18 @@ class TaskDetailViewModel @Inject constructor(
             if (taskToUpdate != null) {
                 repository.update(taskToUpdate)
             }
+            navigationManager.goBack()
         }
     }
 
     fun deleteTask() {
         viewModelScope.launch {
             _uiState.value.task?.let { repository.delete(it) }
+            navigationManager.goBack()
         }
+    }
+
+    fun onBackClicked() {
+        navigationManager.goBack()
     }
 }
