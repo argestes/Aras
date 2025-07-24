@@ -114,11 +114,11 @@ class TaskDetailViewModel @Inject constructor(
 
     fun onExitConfirmClicked() {
         onConfirmationDismissed()
-        navigationManager.goBack()
     }
 
     fun onExitDismissClicked() {
         onConfirmationDismissed()
+        navigationManager.goBack()
     }
 
     private fun checkIfChanged() {

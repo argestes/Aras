@@ -2,6 +2,7 @@ package tr.yigitunlu.aras
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.fadeIn
@@ -43,7 +44,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+
 
         setContent {
             ArasTheme {
@@ -65,7 +66,7 @@ class MainActivity : ComponentActivity() {
                     bottomSheetNavigator = bottomSheetNavigator,
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(WindowInsets.safeDrawing.asPaddingValues())
+//                        .padding(WindowInsets.safeDrawing.asPaddingValues())
                 ) {
                     NavHost(
                         navController,
