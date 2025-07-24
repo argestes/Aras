@@ -9,6 +9,8 @@ interface TaskRepository {
 
     fun getTasksByCompletion(isCompleted: Boolean): Flow<List<Task>>
 
+    fun getTaskById(id: Int): Flow<Task?>
+
     suspend fun insert(task: Task)
 
     suspend fun update(task: Task)

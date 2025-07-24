@@ -24,6 +24,10 @@ class TaskRepositoryImpl(
         }
     }
 
+    override fun getTaskById(id: Int): Flow<Task?> {
+        return taskDao.getTaskById(id).map { it?.toDomain() }
+    }
+
     override suspend fun insert(task: Task) {
         taskDao.insert(task.toEntity())
     }
