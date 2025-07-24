@@ -1,13 +1,21 @@
 package tr.yigitunlu.aras.ui.theme
 
-import android.app.Activity
-import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.platform.LocalWindowInfo
+import androidx.hilt.navigation.compose.hiltViewModel
+import tr.yigitunlu.aras.data.repository.AppTheme
+import tr.yigitunlu.aras.setNavigationBarBackgroundColor
+import tr.yigitunlu.aras.setStatusBarBackgroundColor
 
 private val DarkColorPalette = darkColors(
     primary = Purple80,
@@ -32,24 +40,46 @@ private val LightColorPalette = lightColors(
 
 @Composable
 fun ArasTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+    themeViewModel: ThemeViewModel = hiltViewModel(),
     content: @Composable () -> Unit
 ) {
-    val colors = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            // Material 2 does not support dynamic color schemes
-            if (darkTheme) DarkColorPalette else LightColorPalette
-        }
+    val theme by themeViewModel.theme.collectAsState()
+    val useDarkTheme = when (theme) {
+        AppTheme.LIGHT -> false
+        AppTheme.DARK -> true
+        else -> isSystemInDarkTheme()
+    }
 
-        darkTheme -> DarkColorPalette
-        else -> LightColorPalette
+    val view = LocalView.current
+
+
+
+    val colors = if (useDarkTheme) {
+        DarkColorPalette
+    } else {
+        LightColorPalette
+    }
+
+
+    if(!view.isInEditMode) {
+        SideEffect {
+            val window = (view.context as? android.app.Activity)?.window
+            val color = if (useDarkTheme) android.graphics.Color.BLACK else android.graphics.Color.WHITE
+
+            window?.setStatusBarBackgroundColor(
+                color
+            )
+
+            window?.setNavigationBarBackgroundColor(
+                color
+            )
+        }
     }
 
     MaterialTheme(
         colors = colors,
         typography = Typography,
+        shapes = Shapes,
         content = content
     )
 }

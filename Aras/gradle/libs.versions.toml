@@ -16,6 +16,7 @@ navigationCompose = "2.9.2"
 hiltNavigationFragment = "1.2.0"
 hiltNavigationCompose = "1.2.0"
 material = "1.8.3"
+datastorePreferences = "1.1.7"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -39,6 +40,7 @@ androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-man
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material = { group = "androidx.compose.material", name = "material", version.ref = "material" }
 androidx-material-icons = { group = "androidx.compose.material", name = "material-icons-extended" }
+androidx-datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastorePreferences" }
 androidx-material-navigation = { group = "androidx.compose.material", name = "material-navigation", version.ref = "material" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
 androidx-hilt-navigation-fragment = { group = "androidx.hilt", name = "hilt-navigation-fragment", version.ref = "hiltNavigationFragment" }

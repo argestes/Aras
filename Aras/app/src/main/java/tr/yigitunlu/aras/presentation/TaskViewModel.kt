@@ -9,23 +9,37 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import tr.yigitunlu.aras.data.repository.TaskFilter
+import tr.yigitunlu.aras.data.repository.UserPreferencesRepository
 import tr.yigitunlu.aras.domain.model.Task
 import tr.yigitunlu.aras.domain.repository.TaskRepository
 import javax.inject.Inject
 
 @HiltViewModel
 class TaskViewModel @Inject constructor(
-    private val repository: TaskRepository
+    private val repository: TaskRepository,
+    private val userPreferencesRepository: UserPreferencesRepository
 ) : ViewModel() {
 
     private val _tasks = MutableStateFlow<List<Task>>(emptyList())
     val tasks: StateFlow<List<Task>> = _tasks.asStateFlow()
 
+    private val _currentFilter = MutableStateFlow(TaskFilter.ALL)
+    val currentFilter: StateFlow<TaskFilter> = _currentFilter.asStateFlow()
+
     init {
-        getTasks(isCompleted = null) // Load all tasks initially
+        userPreferencesRepository.userPreferencesFlow.onEach { preferences ->
+            _currentFilter.value = preferences.defaultFilter
+            val isCompleted = when (preferences.defaultFilter) {
+                TaskFilter.ALL -> null
+                TaskFilter.COMPLETED -> true
+                TaskFilter.ACTIVE -> false
+            }
+            getTasks(isCompleted)
+        }.launchIn(viewModelScope)
     }
 
-    fun getTasks(isCompleted: Boolean?) {
+    private fun getTasks(isCompleted: Boolean?) {
         val taskFlow = when (isCompleted) {
             true -> repository.getTasksByCompletion(true)
             false -> repository.getTasksByCompletion(false)
@@ -37,11 +51,6 @@ class TaskViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    fun addTask(task: Task) {
-        viewModelScope.launch {
-            repository.insert(task)
-        }
-    }
 
     fun updateTask(task: Task) {
         viewModelScope.launch {
@@ -49,9 +58,14 @@ class TaskViewModel @Inject constructor(
         }
     }
 
-    fun deleteTask(task: Task) {
-        viewModelScope.launch {
-            repository.delete(task)
+
+    fun setFilter(filter: TaskFilter) {
+        _currentFilter.value = filter
+        val isCompleted = when (filter) {
+            TaskFilter.ALL -> null
+            TaskFilter.COMPLETED -> true
+            TaskFilter.ACTIVE -> false
         }
+        getTasks(isCompleted)
     }
 }
