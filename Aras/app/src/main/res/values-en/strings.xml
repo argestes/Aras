@@ -27,6 +27,6 @@
     <string name="task_detail_save_task_icon_description">Save Task</string>
     <string name="unsaved_changes_dialog_title">Unsaved Changes</string>
     <string name="unsaved_changes_dialog_message">Are you sure you want to exit without saving changes?</string>
-    <string name="unsaved_changes_dialog_continue">Continue</string>
-    <string name="unsaved_changes_dialog_discard">Discard</string>
+    <string name="unsaved_changes_dialog_discard_changes">Discard</string>
+    <string name="unsaved_changes_dialog_cancel_exit">Continue editing</string>
 </resources>

@@ -17,6 +17,7 @@ import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
@@ -34,8 +35,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import tr.yigitunlu.aras.R
 import tr.yigitunlu.aras.presentation.viewmodel.TaskDetailViewModel
@@ -56,12 +57,12 @@ fun TaskDetailScreen(
             text = { Text(stringResource(id = R.string.unsaved_changes_dialog_message)) },
             confirmButton = {
                 TextButton(onClick = { viewModel.onExitConfirmClicked() }) {
-                    Text(stringResource(id = R.string.unsaved_changes_dialog_continue))
+                    Text(stringResource(id = R.string.unsaved_changes_dialog_discard_changes))
                 }
             },
             dismissButton = {
                 TextButton(onClick = { viewModel.onExitDismissClicked() }) {
-                    Text(stringResource(id = R.string.unsaved_changes_dialog_discard))
+                    Text(stringResource(id = R.string.unsaved_changes_dialog_cancel_exit))
                 }
             }
         )
@@ -72,6 +73,7 @@ fun TaskDetailScreen(
     }
 
     Scaffold(
+        backgroundColor = MaterialTheme.colors.background,
         topBar = {
             TopAppBar(
                 title = { Text(stringResource(id = R.string.task_detail_title)) },

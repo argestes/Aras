@@ -1,5 +1,6 @@
 package tr.yigitunlu.aras.ui.theme
 
+import android.graphics.drawable.ColorDrawable
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.enableEdgeToEdge
@@ -70,15 +71,8 @@ fun ArasTheme(
 
     if (!view.isInEditMode) {
         SideEffect {
-
-
             val activity = view.context as? ComponentActivity
             val window = activity?.window
-            val color =
-                if (useDarkTheme) 0x33000000 else android.graphics.Color.WHITE
-
-
-
             val systemBarStyle = if (useDarkTheme) {
                 SystemBarStyle.dark(DarkColorPalette.background.toArgb())
             } else {
@@ -102,12 +96,15 @@ fun ArasTheme(
 //                color
 //            )
 
+            val bg = if (useDarkTheme) android.graphics.Color.BLACK else android.graphics.Color.WHITE
 
-//            window?.setBackgroundDrawable(
-//                ColorDrawable(
-//                    if (useDarkTheme) android.graphics.Color.BLACK else android.graphics.Color.WHITE
-//                )
-//            )
+            window?.setBackgroundDrawable(
+                ColorDrawable(
+                    bg
+                )
+            )
+
+            window?.decorView?.background = ColorDrawable(bg)
 
 //            WindowInsetsControllerCompat(window, window?.decorView).isAppearanceLightStatusBars = false
 
@@ -118,22 +115,15 @@ fun ArasTheme(
         color = colors.surface,
         modifier = Modifier
             .fillMaxSize()
+            .statusBarsPadding()
+            .displayCutoutPadding()
+            .navigationBarsPadding()
     ) {
-        Surface(
-            modifier = Modifier
-                .fillMaxSize()
-                .statusBarsPadding()
-                .displayCutoutPadding()
-                .navigationBarsPadding()
-        ) {
-            MaterialTheme(
-                colors = colors,
-                typography = Typography,
-                shapes = Shapes,
-                content = content
-            )
-        }
+        MaterialTheme(
+            colors = colors,
+            typography = Typography,
+            shapes = Shapes,
+            content = content
+        )
     }
-
-
 }
